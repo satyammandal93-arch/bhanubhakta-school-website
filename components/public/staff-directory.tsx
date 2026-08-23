@@ -1,0 +1,8 @@
+"use client";
+
+import { Mail, Phone } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useLanguage } from "@/components/language-provider";
+import type { StaffMember } from "@/types/school";
+
+export function StaffDirectory({ staff }: { staff: StaffMember[] }) { const departments = ["All", ...Array.from(new Set(staff.map((member) => member.department)))]; const [department, setDepartment] = useState("All"); const { language } = useLanguage(); const members = useMemo(() => staff.filter((member) => department === "All" || member.department === department), [staff, department]); return <><div className="department-tabs">{departments.map((item) => <button onClick={() => setDepartment(item)} className={department === item ? "active" : ""} key={item}>{item === "All" ? language === "ne" ? "सबै" : "All staff" : item}</button>)}</div><div className="staff-grid">{members.map((member) => <article className="staff-card" key={member.id}><img src={member.photo_url || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85"} alt={member.name_en}/><div className="staff-card-content"><h3>{language === "ne" ? member.name_ne : member.name_en}</h3><p className="role">{language === "ne" ? member.designation_ne : member.designation_en}</p><p className="department">{member.department}</p><div className="staff-contact">{member.phone && <a href={`tel:${member.phone}`}><Phone size={14}/>{member.phone}</a>}{member.email && <a href={`mailto:${member.email}`}><Mail size={14}/>{member.email}</a>}</div></div></article>)}</div></>; }

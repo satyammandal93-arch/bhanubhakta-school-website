@@ -1,0 +1,3 @@
+import { RecordManager } from "@/components/admin/record-manager";
+import { demoNotices } from "@/lib/content";
+export default function AdminNoticesPage(){return <><div className="admin-top"><div><h1>Notices</h1><p>Publish notices and attach PDFs for families.</p></div></div><RecordManager table="notices" title="Notice manager" description="Create, update or remove public notices." initialRows={demoNotices} assetField="pdf_url" fields={[{name:"title_ne",label:"Nepali title"},{name:"title_en",label:"English title"},{name:"description_ne",label:"Nepali description",type:"textarea"},{name:"description_en",label:"English description",type:"textarea"},{name:"pdf_url",label:"PDF URL"},{name:"date_published",label:"Published date",type:"date"}]}/></>}
