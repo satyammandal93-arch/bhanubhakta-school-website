@@ -7,6 +7,7 @@ import { useLanguage } from "@/components/language-provider";
 export function EventsGrid({ events, limit }: { events: SchoolEvent[]; limit?: number }) {
   const { language } = useLanguage();
   const visibleEvents = limit ? events.slice(0, limit) : events;
+  if (visibleEvents.length === 0) return <div className="empty-state">{language === "ne" ? "अहिले कुनै कार्यक्रम प्रकाशित गरिएको छैन।" : "No events are published right now."}</div>;
   return <div className="events-grid">{visibleEvents.map((event) => {
     const eventTitle = language === "ne" ? event.title_ne : event.title_en || event.title_ne;
     const eventDescription = language === "ne" ? event.description_ne : event.description_en || event.description_ne;

@@ -6,7 +6,11 @@ async function readCollection<T>(table: string, fallback: T[], order = "created_
   const supabase = createServerClient();
   if (!supabase) return fallback;
   const { data, error } = await supabase.from(table).select("*").order(order, { ascending: table === "notices" ? false : true });
-  return error || !data?.length ? fallback : (data as T[]);
+  if (error) {
+    console.warn(`Unable to load ${table} from Supabase:`, error.message);
+    return [];
+  }
+  return (data ?? []) as T[];
 }
 
 export const getNotices = () => readCollection<Notice>("notices", demoNotices, "date_published");
@@ -16,7 +20,7 @@ export async function getHeroSlides() {
   // Older dashboard records can contain an empty image_url. Never allow one
   // invalid record to replace the working slider with a blank hero.
   const usableSlides = slides.filter((slide) => typeof slide.image_url === "string" && /^https?:\/\//.test(slide.image_url.trim()));
-  return usableSlides.length ? usableSlides : demoSlides;
+  return usableSlides;
 }
 export const getEvents = () => readCollection<SchoolEvent>("events", demoEvents, "event_date");
 

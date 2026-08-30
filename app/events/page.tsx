@@ -2,6 +2,7 @@ import { PageIntro } from "@/components/public/page-intro";
 import { EventsGrid } from "@/components/public/events-grid";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { getEvents } from "@/lib/school-data";
 
 export default async function EventsPage() {
